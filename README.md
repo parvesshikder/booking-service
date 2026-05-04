@@ -280,19 +280,6 @@ The current test suite includes:
 - A controller validation/error test
 - A service test verifying booking creation, persistence interaction, and ticket reservation dependency call
 
-## Checkpoint 1 Evidence
-
-For the checkpoint demo, show:
-
-1. Docker Compose starts the service and database.
-2. Health endpoint returns `UP`.
-3. Swagger UI is available.
-4. `POST /bookings` creates a booking.
-5. `GET /bookings/{id}` returns the booking.
-6. `GET /users/{userId}/bookings` returns customer bookings.
-7. `POST /bookings/{id}/pay` initiates payment.
-8. `DELETE /bookings/{id}` cancels the booking.
-9. Tests pass successfully.
 
 Useful commands:
 
@@ -303,15 +290,3 @@ curl http://localhost:8081/v3/api-docs
 docker run --rm -v /Users/parvesshikder/Desktop/booking-service:/workspace -w /workspace maven:3.9.9-eclipse-temurin-17 mvn -B test
 ```
 
-## Repository Checklist Before Submission
-
-Before submitting or presenting:
-
-```bash
-git status
-git add .
-git commit -m "Complete booking service for checkpoint 1"
-git push
-```
-
-Make sure generated build output such as `target/` is not committed.
