@@ -1,3 +1,35 @@
+server:
+  port: ${SERVER_PORT:8081}
+
 spring:
   application:
     name: booking-service
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/booking_db}
+    username: ${SPRING_DATASOURCE_USERNAME:booking_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:booking_pass}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+services:
+  ticketing:
+    base-url: ${TICKETING_SERVICE_URL:http://localhost:8083}
+    mock-enabled: ${TICKETING_SERVICE_MOCK_ENABLED:true}
+  payment:
+    base-url: ${PAYMENT_SERVICE_URL:http://localhost:8082}
+    mock-enabled: ${PAYMENT_SERVICE_MOCK_ENABLED:true}
