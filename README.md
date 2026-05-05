@@ -132,12 +132,46 @@ Raw OpenAPI JSON is available at:
 http://localhost:8081/v3/api-docs
 ```
 
+## Security / JWT Authentication
+
+Booking endpoints are protected with Spring Security JWT bearer-token authentication.
+
+Public endpoints:
+
+- `GET /actuator/health`
+- Swagger UI and OpenAPI docs
+
+Protected endpoints:
+
+- `POST /bookings`
+- `GET /bookings/{id}`
+- `DELETE /bookings/{id}`
+- `POST /bookings/{id}/pay`
+- `GET /users/{userId}/bookings`
+
+Clients must send a JWT in the `Authorization` header:
+
+```text
+Authorization: Bearer <jwt-token>
+```
+
+This service is configured as a resource server. That means it validates JWTs issued by an auth/user service; it does not manage user registration or passwords itself.
+
+Local development JWT configuration is controlled by environment variables:
+
+```yaml
+JWT_ISSUER: booking-service
+JWT_SECRET: booking-service-development-secret-key-32
+```
+
+
 ## Example Requests
 
 ### Create Booking
 
 ```bash
 curl -X POST http://localhost:8081/bookings \
+  -H "Authorization: Bearer <jwt-token>" \
   -H "Content-Type: application/json" \
   -d '{
     "customerId": 1,
@@ -178,25 +212,29 @@ Example response:
 ### Get Booking By Id
 
 ```bash
-curl http://localhost:8081/bookings/1
+curl http://localhost:8081/bookings/1 \
+  -H "Authorization: Bearer <jwt-token>"
 ```
 
 ### Get Customer Bookings
 
 ```bash
-curl http://localhost:8081/users/1/bookings
+curl http://localhost:8081/users/1/bookings \
+  -H "Authorization: Bearer <jwt-token>"
 ```
 
 ### Initiate Payment
 
 ```bash
-curl -X POST http://localhost:8081/bookings/1/pay
+curl -X POST http://localhost:8081/bookings/1/pay \
+  -H "Authorization: Bearer <jwt-token>"
 ```
 
 ### Cancel Booking
 
 ```bash
-curl -X DELETE http://localhost:8081/bookings/1
+curl -X DELETE http://localhost:8081/bookings/1 \
+  -H "Authorization: Bearer <jwt-token>"
 ```
 
 ## Validation and Error Handling

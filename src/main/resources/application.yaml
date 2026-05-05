@@ -22,6 +22,11 @@ management:
       exposure:
         include: health,info
 
+security:
+  jwt:
+    issuer: ${JWT_ISSUER:booking-service}
+    secret: ${JWT_SECRET:booking-service-development-secret-key-32}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

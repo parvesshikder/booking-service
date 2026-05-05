@@ -1,0 +1,2194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Booking Service Interview Guide</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5c6878;
+      --line: #d9e0e8;
+      --page: #f7f8fb;
+      --panel: #ffffff;
+      --green: #16765f;
+      --blue: #2563a8;
+      --red: #b73b4b;
+      --gold: #b4771f;
+      --soft-green: #e7f4ef;
+      --soft-blue: #e7eff9;
+      --soft-red: #fae9eb;
+      --soft-gold: #f9f0df;
+      --shadow: 0 16px 40px rgba(24, 33, 47, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      background: #111827;
+      color: #f9fafb;
+      overflow: auto;
+    }
+
+    .brand {
+      margin-bottom: 28px;
+    }
+
+    .brand small {
+      color: #aeb8c7;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .brand h1 {
+      margin: 8px 0 10px;
+      font-size: 1.45rem;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 0.92rem;
+    }
+
+    nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      padding: 8px 10px;
+      color: #dbe4f0;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.94rem;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      background: #1f2937;
+      outline: none;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #59c1a6;
+      flex: 0 0 auto;
+    }
+
+    .dot.blue { background: #7fb1ee; }
+    .dot.gold { background: #e6b662; }
+    .dot.red { background: #ef8a96; }
+
+    main {
+      min-width: 0;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: center;
+      padding: 56px clamp(22px, 5vw, 72px);
+      background:
+        linear-gradient(120deg, rgba(17, 24, 39, 0.88), rgba(18, 65, 83, 0.72)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'%3E%3Crect width='1400' height='900' fill='%23e9edf4'/%3E%3Cg fill='none' stroke='%2397a6b8' stroke-width='2' opacity='0.55'%3E%3Cpath d='M140 170h1120v560H140z'/%3E%3Cpath d='M140 270h1120M320 170v560M620 270v460M920 270v460'/%3E%3C/g%3E%3Cg fill='%23ffffff' stroke='%237b8ba1' stroke-width='2'%3E%3Crect x='190' y='225' width='230' height='96' rx='8'/%3E%3Crect x='500' y='340' width='230' height='96' rx='8'/%3E%3Crect x='810' y='340' width='230' height='96' rx='8'/%3E%3Crect x='1080' y='225' width='140' height='96' rx='8'/%3E%3Crect x='500' y='530' width='540' height='120' rx='8'/%3E%3C/g%3E%3Cg fill='%2316765f' opacity='0.85'%3E%3Ccircle cx='255' cy='273' r='18'/%3E%3Ccircle cx='565' cy='388' r='18'/%3E%3Ccircle cx='875' cy='388' r='18'/%3E%3Ccircle cx='1145' cy='273' r='18'/%3E%3Ccircle cx='570' cy='590' r='18'/%3E%3C/g%3E%3Cg fill='%232563a8' opacity='0.72'%3E%3Crect x='295' y='257' width='84' height='12' rx='6'/%3E%3Crect x='295' y='281' width='56' height='12' rx='6'/%3E%3Crect x='605' y='372' width='84' height='12' rx='6'/%3E%3Crect x='605' y='396' width='56' height='12' rx='6'/%3E%3Crect x='915' y='372' width='84' height='12' rx='6'/%3E%3Crect x='915' y='396' width='56' height='12' rx='6'/%3E%3Crect x='610' y='575' width='300' height='12' rx='6'/%3E%3Crect x='610' y='604' width='230' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+      color: #ffffff;
+    }
+
+    .hero-inner {
+      max-width: 940px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      color: #e8f3ff;
+      background: rgba(17, 24, 39, 0.3);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .hero h2 {
+      margin: 22px 0 18px;
+      max-width: 780px;
+      font-size: clamp(2.45rem, 7vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 740px;
+      margin: 0;
+      color: #e5edf6;
+      font-size: clamp(1rem, 2vw, 1.22rem);
+    }
+
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .quick div {
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+    }
+
+    .quick strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.94rem;
+    }
+
+    .quick span {
+      color: #dbe8f7;
+      font-size: 0.86rem;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+
+    .tab:hover,
+    .tab:focus {
+      background: rgba(255, 255, 255, 0.22);
+      outline: none;
+    }
+
+    .lesson {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .lesson + .lesson {
+      margin-top: 14px;
+    }
+
+    .lesson-number {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      background: #111827;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 1.05rem;
+    }
+
+    .lesson h3 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+    }
+
+    .lesson p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    .lesson ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    section {
+      padding: 54px clamp(22px, 5vw, 72px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      max-width: 860px;
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.65rem, 3vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .card ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 9px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .tag.green { background: var(--soft-green); color: var(--green); }
+    .tag.blue { background: var(--soft-blue); color: var(--blue); }
+    .tag.gold { background: var(--soft-gold); color: var(--gold); }
+    .tag.red { background: var(--soft-red); color: var(--red); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      padding: 18px;
+      min-height: 150px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .step span {
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: #111827;
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .code {
+      overflow: auto;
+      padding: 16px;
+      background: #111827;
+      color: #e5edf6;
+      border-radius: 8px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .table {
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f4f8;
+      color: #263445;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .talk-track {
+      border-left: 5px solid var(--green);
+      background: #ffffff;
+      padding: 20px 22px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .talk-track p {
+      margin: 0;
+      color: #334155;
+      font-size: 1.05rem;
+    }
+
+    details {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #263445;
+    }
+
+    details p {
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 14px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .check {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--soft-green);
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .file {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      color: #263445;
+      background: #eef2f7;
+      border-radius: 5px;
+      padding: 1px 5px;
+      white-space: nowrap;
+    }
+
+    footer {
+      padding: 30px clamp(22px, 5vw, 72px) 50px;
+      color: var(--muted);
+      background: #ffffff;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .quick,
+      .grid.two,
+      .grid.three,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .lesson {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 46px;
+        padding-bottom: 46px;
+      }
+    }
+
+    @media print {
+      aside {
+        display: none;
+      }
+
+      .shell {
+        display: block;
+      }
+
+      section,
+      .hero,
+      footer {
+        padding: 22px;
+      }
+
+      .hero {
+        min-height: 0;
+        color: #111827;
+        background: #ffffff;
+      }
+
+      .card,
+      .table,
+      .talk-track,
+      details,
+      .step {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <small>Interview tomorrow</small>
+        <h1>Booking Service Guide</h1>
+        <p>A clear story of what you built, why you built it this way, and how to explain it confidently.</p>
+      </div>
+      <nav aria-label="Page sections">
+        <a href="#crash-course"><span class="dot gold"></span>Crash course</a>
+        <a href="#overview"><span class="dot"></span>Overview</a>
+        <a href="#learning-path"><span class="dot blue"></span>Learning path</a>
+        <a href="#spring-boot"><span class="dot gold"></span>Spring Boot basics</a>
+        <a href="#mental-model"><span class="dot"></span>Mental model</a>
+        <a href="#architecture"><span class="dot blue"></span>Architecture</a>
+        <a href="#flow"><span class="dot gold"></span>Request flow</a>
+        <a href="#annotations"><span class="dot red"></span>Annotations</a>
+        <a href="#code"><span class="dot red"></span>Code tour</a>
+        <a href="#folders"><span class="dot blue"></span>Folders</a>
+        <a href="#database"><span class="dot"></span>Database</a>
+        <a href="#deep-dive"><span class="dot gold"></span>Deep dive</a>
+        <a href="#dependencies"><span class="dot red"></span>Dependencies</a>
+        <a href="#how-it-works"><span class="dot blue"></span>How it works</a>
+        <a href="#why"><span class="dot"></span>Design choices</a>
+        <a href="#api"><span class="dot blue"></span>API endpoints</a>
+        <a href="#security"><span class="dot red"></span>Security</a>
+        <a href="#tests"><span class="dot gold"></span>Tests</a>
+        <a href="#questions"><span class="dot red"></span>Interview Q and A</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="eyebrow">Spring Boot 3.5 | Java 17 | PostgreSQL | Microservice</div>
+          <h2>I built the Booking Service for an event ticketing system.</h2>
+          <p>
+            Its job is to create and manage bookings, reserve tickets through the Ticketing Service,
+            store booking records in its own database, and start payment through the Payment Service.
+          </p>
+          <div class="quick" aria-label="Project facts">
+            <div><strong>Main domain</strong><span>Ticket booking and reservation lifecycle</span></div>
+            <div><strong>Entry point</strong><span><span class="file">BookingController</span> REST API</span></div>
+            <div><strong>Core logic</strong><span><span class="file">BookingService</span> plus domain model</span></div>
+            <div><strong>Storage</strong><span>Own PostgreSQL database through Spring Data JPA</span></div>
+          </div>
+          <div class="tabs" aria-label="Guide tabs">
+            <a class="tab" href="#crash-course">Start With Spring Boot Crash Course</a>
+            <a class="tab" href="#overview">Project Interview Guide</a>
+          </div>
+        </div>
+      </header>
+
+      <section id="crash-course">
+        <div class="section-head">
+          <h2>Spring Boot Crash Course</h2>
+          <p>Learn Spring Boot first, step by step, using your Booking Service as the example project.</p>
+        </div>
+
+        <article class="lesson">
+          <div class="lesson-number">01</div>
+          <div>
+            <span class="tag green">Goal</span>
+            <h3>Understand what a Spring Boot app is</h3>
+            <p>
+              A Spring Boot app is a Java program that can start a web server, receive HTTP requests,
+              run your business logic, and return responses. Your project is a REST API, so its job is not to show pages.
+              Its job is to accept data and return JSON.
+            </p>
+            <ul>
+              <li><strong>In your app:</strong> the booking service starts on port <span class="file">8081</span>.</li>
+              <li><strong>Main file:</strong> <span class="file">BookingServiceApplication.java</span>.</li>
+              <li><strong>Say:</strong> "Spring Boot starts my service and prepares the web, validation, and database layers."</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">02</div>
+          <div>
+            <span class="tag blue">Startup</span>
+            <h3>Learn the main class</h3>
+            <p>
+              The class with <span class="file">@SpringBootApplication</span> is the starting point.
+              When the <span class="file">main</span> method runs, Spring Boot creates the application context.
+              The application context is like a container that holds all Spring-managed objects.
+            </p>
+            <pre class="code">public static void main(String[] args) {
+    SpringApplication.run(BookingServiceApplication.class, args);
+}</pre>
+            <ul>
+              <li><strong>What happens:</strong> Spring scans your project, creates beans, loads config, starts server.</li>
+              <li><strong>Why it matters:</strong> You do not manually create every object with <span class="file">new</span>.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">03</div>
+          <div>
+            <span class="tag gold">Beans</span>
+            <h3>Understand beans and dependency injection</h3>
+            <p>
+              A bean is an object created and managed by Spring. Dependency injection means Spring gives one class
+              the objects it needs. This keeps your code cleaner and easier to test.
+            </p>
+            <pre class="code">public BookingService(
+        BookingRepository bookingRepository,
+        TicketingClient ticketingClient,
+        PaymentClient paymentClient) {
+    this.bookingRepository = bookingRepository;
+    this.ticketingClient = ticketingClient;
+    this.paymentClient = paymentClient;
+}</pre>
+            <ul>
+              <li><strong>In your app:</strong> <span class="file">BookingService</span> needs a repository and two clients.</li>
+              <li><strong>Spring's job:</strong> create those objects and pass them into the constructor.</li>
+              <li><strong>Say:</strong> "I use constructor injection so dependencies are explicit and testable."</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">04</div>
+          <div>
+            <span class="tag red">HTTP</span>
+            <h3>Understand controllers</h3>
+            <p>
+              A controller is the class that receives web requests. It should be thin. That means it should not contain
+              the main business logic. It should receive the request, validate it, and call the service.
+            </p>
+            <pre class="code">@PostMapping("/bookings")
+@ResponseStatus(HttpStatus.CREATED)
+public BookingResponse createBooking(@Valid @RequestBody CreateBookingRequest request) {
+    return bookingService.createBooking(request);
+}</pre>
+            <ul>
+              <li><strong>Route:</strong> <span class="file">POST /bookings</span>.</li>
+              <li><strong>Input:</strong> JSON request body.</li>
+              <li><strong>Output:</strong> JSON booking response.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">05</div>
+          <div>
+            <span class="tag green">DTOs</span>
+            <h3>Understand request and response DTOs</h3>
+            <p>
+              DTO means Data Transfer Object. It is the shape of data entering or leaving your API.
+              Your app uses Java records for DTOs because records are simple immutable data carriers.
+            </p>
+            <pre class="code">public record CreateBookingRequest(
+        @NotNull Long customerId,
+        @NotNull Long eventId,
+        @NotBlank String currency,
+        @NotEmpty List&lt;@Valid BookingItemRequest&gt; items) {
+}</pre>
+            <ul>
+              <li><strong>Why:</strong> keep API data separate from database entities.</li>
+              <li><strong>In your app:</strong> request DTOs enter the controller; response DTOs go back to the client.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">06</div>
+          <div>
+            <span class="tag blue">Validation</span>
+            <h3>Understand validation</h3>
+            <p>
+              Validation protects your app from bad input. If someone sends an empty item list or quantity zero,
+              the app should reject the request before creating a booking.
+            </p>
+            <ul>
+              <li><span class="file">@NotNull</span>: value must exist.</li>
+              <li><span class="file">@NotBlank</span>: text cannot be empty or spaces.</li>
+              <li><span class="file">@NotEmpty</span>: list must contain at least one item.</li>
+              <li><span class="file">@Min(1)</span>: quantity must be at least 1.</li>
+              <li><span class="file">@DecimalMin("0.00")</span>: price cannot be negative.</li>
+            </ul>
+            <p><strong>Say:</strong> "Validation happens at the API boundary, before business logic runs."</p>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">07</div>
+          <div>
+            <span class="tag gold">Service</span>
+            <h3>Understand the service layer</h3>
+            <p>
+              The service layer represents use cases. A use case is a business action, such as create booking,
+              cancel booking, list bookings, or initiate payment.
+            </p>
+            <pre class="code">public BookingResponse createBooking(CreateBookingRequest request) {
+    request.items().forEach(item -&gt;
+        ticketingClient.reserveTickets(item.ticketTypeId(), item.quantity()));
+
+    List&lt;BookingItem&gt; items = request.items().stream()
+        .map(item -&gt; toBookingItem(item, request.currency()))
+        .toList();
+
+    Booking booking = new Booking(request.customerId(), request.eventId(), request.currency(), items);
+    return toResponse(bookingRepository.save(booking));
+}</pre>
+            <ul>
+              <li><strong>What it coordinates:</strong> ticket reservation, object creation, persistence, response mapping.</li>
+              <li><strong>Why not in controller:</strong> controllers should not become messy with business workflows.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">08</div>
+          <div>
+            <span class="tag red">Domain</span>
+            <h3>Understand entities and domain rules</h3>
+            <p>
+              The domain model represents the real business concepts. In this app, the important concept is
+              <span class="file">Booking</span>. A booking has a customer, event, status, reservation time, expiry, total amount,
+              and booking items.
+            </p>
+            <ul>
+              <li><strong>Status:</strong> new bookings start as <span class="file">PENDING</span>.</li>
+              <li><strong>Expiry:</strong> reservation expires after 15 minutes.</li>
+              <li><strong>Total:</strong> quantity multiplied by unit price for all items.</li>
+              <li><strong>Rule:</strong> confirmed bookings cannot be cancelled here.</li>
+            </ul>
+            <p><strong>Say:</strong> "I kept booking rules inside the Booking model so the domain behavior stays close to the data."</p>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">09</div>
+          <div>
+            <span class="tag green">JPA</span>
+            <h3>Understand database mapping</h3>
+            <p>
+              JPA maps Java objects to database tables. <span class="file">@Entity</span> tells JPA that a class should be stored.
+              <span class="file">@Id</span> marks the primary key. Relationships explain how objects connect.
+            </p>
+            <ul>
+              <li><strong><span class="file">Booking</span>:</strong> table for booking records.</li>
+              <li><strong><span class="file">BookingItem</span>:</strong> table for items inside a booking.</li>
+              <li><strong><span class="file">@OneToMany</span>:</strong> one booking has many items.</li>
+              <li><strong><span class="file">@ManyToOne</span>:</strong> many items belong to one booking.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">10</div>
+          <div>
+            <span class="tag blue">Repository</span>
+            <h3>Understand repositories</h3>
+            <p>
+              A repository is the class/interface used to save and load data. With Spring Data JPA, you write an interface,
+              and Spring creates the implementation automatically.
+            </p>
+            <pre class="code">public interface BookingRepository extends JpaRepository&lt;Booking, Long&gt; {
+    List&lt;Booking&gt; findByCustomerId(Long customerId);
+}</pre>
+            <ul>
+              <li><strong>Built-in:</strong> <span class="file">save</span>, <span class="file">findById</span>, <span class="file">findAll</span>.</li>
+              <li><strong>Custom by name:</strong> <span class="file">findByCustomerId</span> becomes a query automatically.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">11</div>
+          <div>
+            <span class="tag gold">Transactions</span>
+            <h3>Understand transactions</h3>
+            <p>
+              A transaction means a group of database operations is treated as one unit. If it succeeds, changes are saved.
+              If an error happens, changes can be rolled back.
+            </p>
+            <ul>
+              <li><strong>In your app:</strong> <span class="file">@Transactional</span> is on <span class="file">BookingService</span>.</li>
+              <li><strong>Why:</strong> create/cancel/payment use cases should have consistent database behavior.</li>
+              <li><strong>Read-only:</strong> methods like get booking use <span class="file">@Transactional(readOnly = true)</span>.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">12</div>
+          <div>
+            <span class="tag red">Errors</span>
+            <h3>Understand exception handling</h3>
+            <p>
+              Instead of letting errors return random responses, your app has a global exception handler.
+              It converts Java exceptions into clear API errors.
+            </p>
+            <ul>
+              <li><strong>404:</strong> booking not found.</li>
+              <li><strong>400:</strong> validation failure or invalid booking state.</li>
+              <li><strong>503:</strong> ticketing or payment service unavailable.</li>
+            </ul>
+            <p><strong>Say:</strong> "I use centralized exception handling so API errors are consistent."</p>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">13</div>
+          <div>
+            <span class="tag green">Other services</span>
+            <h3>Understand clients and microservices</h3>
+            <p>
+              Your booking service does not own everything. It calls other services for other responsibilities.
+              This is a microservice idea: each service owns one business capability.
+            </p>
+            <ul>
+              <li><strong>TicketingClient:</strong> reserves and releases ticket quantities.</li>
+              <li><strong>PaymentClient:</strong> creates a payment for a booking.</li>
+              <li><strong>Mock mode:</strong> lets this service run even if those other services are not running.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">14</div>
+          <div>
+            <span class="tag blue">Config</span>
+            <h3>Understand application.yaml</h3>
+            <p>
+              Configuration should not be hardcoded in Java. <span class="file">application.yaml</span> stores settings like
+              server port, database URL, Swagger path, and dependency service URLs.
+            </p>
+            <ul>
+              <li><strong>Server:</strong> <span class="file">8081</span>.</li>
+              <li><strong>Database:</strong> PostgreSQL connection settings.</li>
+              <li><strong>Mock settings:</strong> ticketing and payment mock mode defaults to true.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">15</div>
+          <div>
+            <span class="tag gold">Tests</span>
+            <h3>Understand tests</h3>
+            <p>
+              Tests prove that important behavior works. Your service test checks business coordination.
+              Your controller test checks HTTP behavior.
+            </p>
+            <ul>
+              <li><strong>BookingServiceTest:</strong> verifies tickets are reserved and pending booking is saved.</li>
+              <li><strong>BookingControllerTest:</strong> verifies valid request returns 201 and invalid request returns 400.</li>
+              <li><strong>Say:</strong> "I tested both the service logic and the web/API layer."</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-number">16</div>
+          <div>
+            <span class="tag red">Practice</span>
+            <h3>Final crash-course explanation</h3>
+            <p>
+              Practice saying this out loud:
+            </p>
+            <div class="talk-track">
+              <p>
+                "This is a Spring Boot REST API. Spring Boot starts the app, scans my classes, creates beans,
+                and maps HTTP requests to controller methods. The BookingController receives booking requests and validates DTOs.
+                The BookingService contains the business workflow: reserve tickets, create a Booking domain object, save it through
+                Spring Data JPA, and return a response. The Booking entity and BookingItem entity are stored in PostgreSQL.
+                External services are called through client classes, and errors are handled centrally."
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="overview">
+        <div class="section-head">
+          <h2>What This App Does</h2>
+          <p>Use this as your opening answer when the interviewer says: "Tell me about your project."</p>
+        </div>
+        <div class="talk-track">
+          <p>
+            "This is a Booking Service for an event ticketing and venue management system. I designed it as an
+            independent Spring Boot microservice. It owns the booking domain: creating reservations, storing bookings,
+            listing a customer's bookings, cancelling bookings, and initiating payment. It does not own ticket inventory
+            or payment processing, so it communicates with Ticketing Service and Payment Service as dependencies."
+          </p>
+        </div>
+        <div class="grid three" style="margin-top: 16px;">
+          <article class="card">
+            <span class="tag green">What I built</span>
+            <h3>A booking API</h3>
+            <p>Clients can create, fetch, cancel, pay for, and list bookings using REST endpoints.</p>
+          </article>
+          <article class="card">
+            <span class="tag blue">What it protects</span>
+            <h3>Reservation consistency</h3>
+            <p>When a booking is created, ticket quantities are reserved first, then the booking is saved as pending.</p>
+          </article>
+          <article class="card">
+            <span class="tag gold">What it delegates</span>
+            <h3>Other bounded contexts</h3>
+            <p>Ticket inventory belongs to Ticketing Service. Payment creation belongs to Payment Service.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="learning-path">
+        <div class="section-head">
+          <h2>How To Learn This From Zero</h2>
+          <p>Do not try to memorize every file first. Learn the story in this order.</p>
+        </div>
+        <div class="flow" aria-label="Learning order">
+          <div class="step">
+            <span>1</span>
+            <h3>Understand the problem</h3>
+            <p>This app helps a customer reserve tickets for an event before paying.</p>
+          </div>
+          <div class="step">
+            <span>2</span>
+            <h3>Learn the layers</h3>
+            <p>Controller receives requests, service does business work, repository talks to database.</p>
+          </div>
+          <div class="step">
+            <span>3</span>
+            <h3>Follow one request</h3>
+            <p>Trace <span class="file">POST /bookings</span> from JSON request to saved booking response.</p>
+          </div>
+          <div class="step">
+            <span>4</span>
+            <h3>Learn annotations</h3>
+            <p>Annotations tell Spring what each class or method is supposed to do.</p>
+          </div>
+          <div class="step">
+            <span>5</span>
+            <h3>Practice explaining</h3>
+            <p>Use the scripts in this page until you can explain without reading line by line.</p>
+          </div>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            Start with one sentence: "My project is a Spring Boot REST API that manages ticket bookings."
+            Then slowly add detail: "It validates requests, reserves tickets through another service, saves bookings in PostgreSQL,
+            and can later cancel or start payment."
+          </p>
+        </div>
+      </section>
+
+      <section id="spring-boot">
+        <div class="section-head">
+          <h2>Spring Boot Basics</h2>
+          <p>If you are new to Spring Boot, learn this mental model first. Then the code becomes much easier to explain.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag green">Big idea</span>
+            <h3>Spring Boot starts and wires the app for you</h3>
+            <p>
+              Spring Boot is a Java framework that creates web applications quickly. Instead of manually creating every
+              object and configuring a web server yourself, Spring Boot starts an embedded server, scans your code,
+              creates important objects, connects them together, and exposes your REST endpoints.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag blue">In this project</span>
+            <h3><span class="file">BookingServiceApplication</span> is the startup class</h3>
+            <p>
+              The class with <span class="file">@SpringBootApplication</span> is the main entry point. When you run the app,
+              Spring Boot starts on port <span class="file">8081</span>, loads configuration from
+              <span class="file">application.yaml</span>, connects to PostgreSQL, and prepares the REST controllers.
+            </p>
+          </article>
+        </div>
+        <div class="table" style="margin-top: 16px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Beginner term</th>
+                <th>Meaning</th>
+                <th>Where you use it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bean</td>
+                <td>An object managed by Spring. Spring creates it and can inject it into other classes.</td>
+                <td><span class="file">BookingController</span>, <span class="file">BookingService</span>, clients, repository.</td>
+              </tr>
+              <tr>
+                <td>Dependency injection</td>
+                <td>Instead of a class creating its own dependencies, Spring passes them through the constructor.</td>
+                <td><span class="file">BookingService</span> receives repository, ticketing client, and payment client.</td>
+              </tr>
+              <tr>
+                <td>Controller</td>
+                <td>The web layer. It receives HTTP requests and returns HTTP responses.</td>
+                <td><span class="file">BookingController</span>.</td>
+              </tr>
+              <tr>
+                <td>Service</td>
+                <td>The business layer. It contains use-case logic and coordinates work.</td>
+                <td><span class="file">BookingService</span>.</td>
+              </tr>
+              <tr>
+                <td>Repository</td>
+                <td>The database access layer. Spring Data JPA implements common queries automatically.</td>
+                <td><span class="file">BookingRepository</span>.</td>
+              </tr>
+              <tr>
+                <td>Entity</td>
+                <td>A Java class mapped to a database table.</td>
+                <td><span class="file">Booking</span> and <span class="file">BookingItem</span>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            "Spring Boot helped me focus on the booking business logic. It auto-configures the web server, validation,
+            JPA, and dependency injection, while my code defines the actual domain behavior."
+          </p>
+        </div>
+      </section>
+
+      <section id="mental-model">
+        <div class="section-head">
+          <h2>The Simple Mental Model</h2>
+          <p>Think of Spring Boot as a restaurant system. It sounds silly, but it makes the layers easier.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <span class="tag blue">Customer order</span>
+            <h3>HTTP request</h3>
+            <p>A user sends a request like "I want to book 2 tickets." In your app, that is <span class="file">POST /bookings</span> with JSON data.</p>
+          </article>
+          <article class="card">
+            <span class="tag green">Waiter</span>
+            <h3>Controller</h3>
+            <p>The controller receives the order. It does not cook the food. It checks the request and passes it to the service.</p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Kitchen</span>
+            <h3>Service</h3>
+            <p>The service does the real business work: reserve tickets, create booking, save it, or start payment.</p>
+          </article>
+          <article class="card">
+            <span class="tag red">Recipe rules</span>
+            <h3>Domain model</h3>
+            <p>The booking object knows booking-specific rules: pending status, expiry time, total price, cancel rules.</p>
+          </article>
+          <article class="card">
+            <span class="tag blue">Storage room</span>
+            <h3>Repository and database</h3>
+            <p>The repository stores and loads bookings from PostgreSQL.</p>
+          </article>
+          <article class="card">
+            <span class="tag green">Other departments</span>
+            <h3>External clients</h3>
+            <p>Ticketing Service handles ticket inventory. Payment Service handles payment. Your service talks to them when needed.</p>
+          </article>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            Interview version: "I separated responsibilities into layers. The controller handles HTTP, the service handles use cases,
+            the domain model holds booking rules, and the repository handles persistence."
+          </p>
+        </div>
+      </section>
+
+      <section id="architecture">
+        <div class="section-head">
+          <h2>Architecture</h2>
+          <p>The project uses a layered Spring Boot architecture with a small Domain-Driven Design shape.</p>
+        </div>
+        <div class="flow" aria-label="Layered architecture">
+          <div class="step">
+            <span>1</span>
+            <h3>Controller</h3>
+            <p><span class="file">BookingController</span> exposes REST endpoints and validates request bodies.</p>
+          </div>
+          <div class="step">
+            <span>2</span>
+            <h3>Service</h3>
+            <p><span class="file">BookingService</span> coordinates business use cases and external calls.</p>
+          </div>
+          <div class="step">
+            <span>3</span>
+            <h3>Domain</h3>
+            <p><span class="file">Booking</span>, <span class="file">BookingItem</span>, <span class="file">Money</span>, and status rules.</p>
+          </div>
+          <div class="step">
+            <span>4</span>
+            <h3>Repository</h3>
+            <p><span class="file">BookingRepository</span> extends JPA repository for persistence.</p>
+          </div>
+          <div class="step">
+            <span>5</span>
+            <h3>Database</h3>
+            <p>PostgreSQL stores bookings and booking items in the service's own database.</p>
+          </div>
+        </div>
+        <div class="table" style="margin-top: 16px;">
+          <table>
+            <thead>
+              <tr>
+                <th>DDD idea</th>
+                <th>In this project</th>
+                <th>Interview explanation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aggregate root</td>
+                <td><span class="file">Booking</span></td>
+                <td>A booking owns its items and controls status changes like cancel and confirm.</td>
+              </tr>
+              <tr>
+                <td>Entity</td>
+                <td><span class="file">BookingItem</span></td>
+                <td>Each item represents a ticket type, quantity, and unit price inside one booking.</td>
+              </tr>
+              <tr>
+                <td>Value object</td>
+                <td><span class="file">Money</span></td>
+                <td>Amount and currency travel together, which keeps price data explicit and safer.</td>
+              </tr>
+              <tr>
+                <td>Repository</td>
+                <td><span class="file">BookingRepository</span></td>
+                <td>Persistence is abstracted behind Spring Data JPA.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="flow">
+        <div class="section-head">
+          <h2>Create Booking Flow</h2>
+          <p>This is the most important flow to explain because it touches validation, external services, domain logic, and persistence.</p>
+        </div>
+        <div class="grid two">
+          <div class="card">
+            <span class="tag green">Happy path</span>
+            <h3>What happens when POST /bookings is called?</h3>
+            <ul>
+              <li>The controller receives a validated <span class="file">CreateBookingRequest</span>.</li>
+              <li>The service reserves each requested ticket type through <span class="file">TicketingClient</span>.</li>
+              <li>Request DTOs are converted into <span class="file">BookingItem</span> domain objects.</li>
+              <li>A <span class="file">Booking</span> is created with status <span class="file">PENDING</span>.</li>
+              <li>The domain model calculates the total amount and 15 minute reservation expiry.</li>
+              <li>The repository saves the aggregate and the service returns a response DTO.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="tag red">Failure path</span>
+            <h3>What can go wrong?</h3>
+            <ul>
+              <li>Invalid input returns 400 through Jakarta Validation and the global exception handler.</li>
+              <li>A missing booking returns 404 through <span class="file">BookingNotFoundException</span>.</li>
+              <li>A dependency failure returns 503 when a REST client call fails.</li>
+              <li>Invalid business states, such as paying a cancelled booking, return 400.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-head" style="margin-top: 30px;">
+          <h2>Follow The Code Like A Story</h2>
+          <p>When you are nervous, explain this exact sequence. It is the backbone of the whole project.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag blue">Step-by-step explanation</span>
+            <h3>Create booking</h3>
+            <ul>
+              <li>User sends JSON to <span class="file">POST /bookings</span>.</li>
+              <li><span class="file">BookingController.createBooking</span> receives that JSON as a Java record.</li>
+              <li><span class="file">@Valid</span> checks that customer id, event id, currency, and items are valid.</li>
+              <li>The controller calls <span class="file">BookingService.createBooking</span>.</li>
+              <li>The service asks <span class="file">TicketingClient</span> to reserve tickets.</li>
+              <li>The service converts request items into <span class="file">BookingItem</span> objects.</li>
+              <li>The service creates a <span class="file">Booking</span> object.</li>
+              <li>The <span class="file">Booking</span> constructor sets status to pending, sets expiry to 15 minutes, and calculates total price.</li>
+              <li><span class="file">BookingRepository.save</span> stores the booking in PostgreSQL.</li>
+              <li>The service returns a <span class="file">BookingResponse</span> back to the controller, and Spring converts it to JSON.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag green">Say it like this</span>
+            <h3>Interview script</h3>
+            <p>
+              "The main flow is creating a booking. The controller receives a POST request and validates the JSON body.
+              Then the service layer reserves the requested ticket quantities through the Ticketing Client. After that it creates
+              the Booking aggregate, where the status, expiry time, and total amount are calculated. Finally, Spring Data JPA
+              saves the booking and its items to PostgreSQL, and the API returns a response DTO."
+            </p>
+          </article>
+        </div>
+        <pre class="code" aria-label="Create booking request example">POST /bookings
+{
+  "customerId": 1,
+  "eventId": 10,
+  "currency": "EUR",
+  "items": [
+    { "ticketTypeId": 5, "quantity": 2, "unitPrice": 25.00 }
+  ]
+}
+
+Result: PENDING booking, totalAmount = 50.00 EUR, reservationExpiry = now + 15 minutes</pre>
+        <div class="section-head" style="margin-top: 30px;">
+          <h2>Request Lifecycle In Simple Words</h2>
+          <p>This is what happens inside Spring Boot when someone sends a request to your app.</p>
+        </div>
+        <div class="flow" aria-label="Request lifecycle">
+          <div class="step">
+            <span>1</span>
+            <h3>HTTP request arrives</h3>
+            <p>The embedded server receives <span class="file">POST /bookings</span>.</p>
+          </div>
+          <div class="step">
+            <span>2</span>
+            <h3>Spring finds method</h3>
+            <p><span class="file">@PostMapping("/bookings")</span> tells Spring which Java method handles it.</p>
+          </div>
+          <div class="step">
+            <span>3</span>
+            <h3>JSON becomes Java</h3>
+            <p><span class="file">@RequestBody</span> converts JSON into <span class="file">CreateBookingRequest</span>.</p>
+          </div>
+          <div class="step">
+            <span>4</span>
+            <h3>Validation runs</h3>
+            <p><span class="file">@Valid</span> checks required fields, item quantity, and price rules.</p>
+          </div>
+          <div class="step">
+            <span>5</span>
+            <h3>Service does work</h3>
+            <p>The controller calls <span class="file">bookingService.createBooking(request)</span>.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="annotations">
+        <div class="section-head">
+          <h2>Important Annotations</h2>
+          <p>Spring Boot code is annotation-heavy. These are the ones you should understand for your interview.</p>
+        </div>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Annotation</th>
+                <th>Plain English meaning</th>
+                <th>Used in your app</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="file">@SpringBootApplication</span></td>
+                <td>Marks the main class. It enables auto-configuration and component scanning.</td>
+                <td>Application startup class.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@RestController</span></td>
+                <td>This class handles HTTP requests and returns JSON responses.</td>
+                <td><span class="file">BookingController</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@RequestMapping</span></td>
+                <td>Defines a base route for a controller.</td>
+                <td><span class="file">BookingController</span> uses an empty base path.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@PostMapping</span>, <span class="file">@GetMapping</span>, <span class="file">@DeleteMapping</span></td>
+                <td>Map HTTP methods and paths to Java methods.</td>
+                <td>Create, read, cancel, pay, and list booking endpoints.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@RequestBody</span></td>
+                <td>Reads JSON from the request body and converts it into a Java object.</td>
+                <td>Create booking request.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@PathVariable</span></td>
+                <td>Reads a value from the URL path.</td>
+                <td><span class="file">/bookings/{id}</span> and <span class="file">/users/{userId}/bookings</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@Valid</span></td>
+                <td>Runs validation rules on the request object.</td>
+                <td>Create booking endpoint.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@Service</span></td>
+                <td>Marks a class as business logic managed by Spring.</td>
+                <td><span class="file">BookingService</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@Transactional</span></td>
+                <td>Runs database work in a transaction, so related changes succeed or fail together.</td>
+                <td><span class="file">BookingService</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@Entity</span></td>
+                <td>Maps a Java class to a database table.</td>
+                <td><span class="file">Booking</span> and <span class="file">BookingItem</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@OneToMany</span> and <span class="file">@ManyToOne</span></td>
+                <td>Describe a database relationship between two entities.</td>
+                <td>One booking has many booking items.</td>
+              </tr>
+              <tr>
+                <td><span class="file">@RestControllerAdvice</span></td>
+                <td>Central place to handle exceptions for REST controllers.</td>
+                <td><span class="file">GlobalExceptionHandler</span>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section-head" style="margin-top: 30px;">
+          <h2>Annotations In One Sentence Each</h2>
+          <p>Use this section when annotation names look scary.</p>
+        </div>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong><span class="file">@RestController</span>:</strong> "This class receives web requests and returns JSON."</span></li>
+          <li><span class="check">✓</span><span><strong><span class="file">@Service</span>:</strong> "This class contains business logic and is managed by Spring."</span></li>
+          <li><span class="check">✓</span><span><strong><span class="file">@Entity</span>:</strong> "This Java class is stored as a database table."</span></li>
+          <li><span class="check">✓</span><span><strong><span class="file">@Transactional</span>:</strong> "The database work in this method should behave as one unit."</span></li>
+          <li><span class="check">✓</span><span><strong><span class="file">@Valid</span>:</strong> "Before running business logic, check that the incoming request follows the validation rules."</span></li>
+        </ul>
+      </section>
+
+      <section id="code">
+        <div class="section-head">
+          <h2>Code Tour</h2>
+          <p>These are the files to mention when you want to sound precise and grounded.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag blue">REST</span>
+            <h3><span class="file">BookingController.java</span></h3>
+            <p>Maps HTTP endpoints to service methods. It uses <span class="file">@Valid</span> so bad request bodies are rejected before business logic runs.</p>
+          </article>
+          <article class="card">
+            <span class="tag green">Business logic</span>
+            <h3><span class="file">BookingService.java</span></h3>
+            <p>Coordinates the use cases: reserve tickets, save booking, cancel booking, release tickets, initiate payment, and map domain objects to response DTOs.</p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Domain model</span>
+            <h3><span class="file">Booking.java</span></h3>
+            <p>Owns status, reservation time, expiry time, items, and total calculation. This keeps booking rules close to the booking data.</p>
+          </article>
+          <article class="card">
+            <span class="tag red">Error handling</span>
+            <h3><span class="file">GlobalExceptionHandler.java</span></h3>
+            <p>Converts exceptions into consistent API error responses: 400, 404, and 503.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="folders">
+        <div class="section-head">
+          <h2>What Each Folder Means</h2>
+          <p>When you open a Spring Boot project, this is how to read it without feeling lost.</p>
+        </div>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Folder or file</th>
+                <th>Beginner meaning</th>
+                <th>In your project</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="file">controller</span></td>
+                <td>Web/API layer. Receives HTTP requests.</td>
+                <td><span class="file">BookingController</span> defines routes like <span class="file">POST /bookings</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">service</span></td>
+                <td>Business logic layer. Coordinates what should happen.</td>
+                <td><span class="file">BookingService</span> creates, cancels, lists, and starts payment for bookings.</td>
+              </tr>
+              <tr>
+                <td><span class="file">model</span></td>
+                <td>Domain objects and database entities.</td>
+                <td><span class="file">Booking</span>, <span class="file">BookingItem</span>, <span class="file">Money</span>, <span class="file">BookingStatus</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">dto</span></td>
+                <td>Objects used for API input and output.</td>
+                <td><span class="file">CreateBookingRequest</span> and <span class="file">BookingResponse</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">repository</span></td>
+                <td>Database access layer.</td>
+                <td><span class="file">BookingRepository</span> gives save, find, and customer booking queries.</td>
+              </tr>
+              <tr>
+                <td><span class="file">client</span></td>
+                <td>Code that calls other services.</td>
+                <td><span class="file">TicketingClient</span> and <span class="file">PaymentClient</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">exception</span></td>
+                <td>Custom errors and global error handling.</td>
+                <td>Turns missing bookings, validation errors, bad states, and dependency failures into API responses.</td>
+              </tr>
+              <tr>
+                <td><span class="file">application.yaml</span></td>
+                <td>Configuration file.</td>
+                <td>Sets server port, database connection, Swagger path, and dependency URLs.</td>
+              </tr>
+              <tr>
+                <td><span class="file">pom.xml</span></td>
+                <td>Maven project file.</td>
+                <td>Lists Java version and dependencies like Spring Web, JPA, Validation, PostgreSQL, tests, and Swagger.</td>
+              </tr>
+              <tr>
+                <td><span class="file">Dockerfile</span> and <span class="file">docker-compose.yml</span></td>
+                <td>Container setup.</td>
+                <td>Builds the app and runs it with PostgreSQL.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            "The project is organized by responsibility. Controllers handle HTTP, services handle business logic,
+            models represent the domain, repositories handle persistence, DTOs shape API data, and clients call other microservices."
+          </p>
+        </div>
+      </section>
+
+      <section id="database">
+        <div class="section-head">
+          <h2>Database And JPA</h2>
+          <p>JPA is how your Java objects become rows in PostgreSQL.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag blue">Entity mapping</span>
+            <h3>Booking table</h3>
+            <p>
+              <span class="file">Booking</span> is marked with <span class="file">@Entity</span>, so JPA maps it to a database table.
+              Fields like <span class="file">customerId</span>, <span class="file">eventId</span>, status, reservation time,
+              expiry, and total amount become stored columns.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag green">Relationship</span>
+            <h3>One booking has many items</h3>
+            <p>
+              <span class="file">@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)</span>
+              means the booking owns its list of items. When the booking is saved, its items are saved too.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Repository</span>
+            <h3>Spring writes common SQL for you</h3>
+            <p>
+              <span class="file">BookingRepository extends JpaRepository&lt;Booking, Long&gt;</span>. This gives methods like
+              <span class="file">save</span>, <span class="file">findById</span>, and delete behavior without writing SQL manually.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag red">Custom query method</span>
+            <h3><span class="file">findByCustomerId</span></h3>
+            <p>
+              Spring Data understands the method name and creates a query like "find all bookings where customer_id equals
+              this customer id." That powers <span class="file">GET /users/{userId}/bookings</span>.
+            </p>
+          </article>
+        </div>
+        <pre class="code" aria-label="Repository example">public interface BookingRepository extends JpaRepository&lt;Booking, Long&gt; {
+    List&lt;Booking&gt; findByCustomerId(Long customerId);
+}</pre>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            "I used Spring Data JPA so I could model the booking domain in Java and persist it to PostgreSQL without
+            writing repetitive SQL for basic CRUD operations."
+          </p>
+        </div>
+      </section>
+
+      <section id="deep-dive">
+        <div class="section-head">
+          <h2>Everything You Used: What, Why, How</h2>
+          <p>This is the big beginner-friendly deep dive. Read it slowly. Each concept connects directly to your project.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag green">Java 17</span>
+            <h3>What it is</h3>
+            <p>Java is the programming language. Java 17 is a stable long-term-support version commonly used in Spring Boot projects.</p>
+            <ul>
+              <li><strong>Why used:</strong> Spring Boot 3 works well with modern Java versions and Java 17 is reliable for production.</li>
+              <li><strong>How it works here:</strong> Your classes, records, enums, services, controllers, and tests are all Java code compiled by Maven.</li>
+              <li><strong>Interview line:</strong> "I used Java 17 because it is a stable modern Java version supported by Spring Boot 3."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag blue">Spring Boot</span>
+            <h3>What it is</h3>
+            <p>Spring Boot is a framework that makes it easier to build Java applications, especially REST APIs and microservices.</p>
+            <ul>
+              <li><strong>Why used:</strong> It gives auto-configuration, embedded server, dependency injection, validation, database integration, and testing support.</li>
+              <li><strong>How it works here:</strong> It starts the booking service, scans your classes, creates beans, maps endpoints, and connects JPA to PostgreSQL.</li>
+              <li><strong>Interview line:</strong> "Spring Boot removes boilerplate so I can focus on booking business logic."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag gold">Maven</span>
+            <h3>What it is</h3>
+            <p>Maven is the build tool. It downloads libraries, compiles Java, runs tests, and packages the app into a jar file.</p>
+            <ul>
+              <li><strong>Why used:</strong> Spring Boot projects commonly use Maven to manage dependencies and builds.</li>
+              <li><strong>How it works here:</strong> <span class="file">pom.xml</span> says the app uses Spring Web, JPA, Validation, PostgreSQL, Swagger, and testing libraries.</li>
+              <li><strong>Interview line:</strong> "Maven manages my dependencies and builds the runnable application jar."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag red">REST API</span>
+            <h3>What it is</h3>
+            <p>A REST API lets other clients talk to your app over HTTP using routes like POST, GET, and DELETE.</p>
+            <ul>
+              <li><strong>Why used:</strong> Booking Service is a microservice, so other parts of the system need a clear HTTP interface.</li>
+              <li><strong>How it works here:</strong> <span class="file">BookingController</span> exposes routes such as <span class="file">POST /bookings</span> and <span class="file">GET /bookings/{id}</span>.</li>
+              <li><strong>Interview line:</strong> "I exposed booking operations as REST endpoints so clients and other services can use them."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag blue">Spring Web</span>
+            <h3>What it is</h3>
+            <p>Spring Web is the Spring module that handles web requests, controllers, JSON conversion, and HTTP responses.</p>
+            <ul>
+              <li><strong>Why used:</strong> Your app needs to receive HTTP requests and return JSON.</li>
+              <li><strong>How it works here:</strong> It reads request JSON into DTO records and converts response records back into JSON.</li>
+              <li><strong>Interview line:</strong> "Spring Web powers my REST controller layer."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag green">Spring Data JPA</span>
+            <h3>What it is</h3>
+            <p>Spring Data JPA helps Java objects be stored in a relational database without writing basic SQL manually.</p>
+            <ul>
+              <li><strong>Why used:</strong> The service must persist bookings and booking items in PostgreSQL.</li>
+              <li><strong>How it works here:</strong> <span class="file">BookingRepository</span> extends <span class="file">JpaRepository</span>, giving methods like save and findById automatically.</li>
+              <li><strong>Interview line:</strong> "JPA maps my Booking entity to database rows and Spring Data generates repository behavior."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag gold">PostgreSQL</span>
+            <h3>What it is</h3>
+            <p>PostgreSQL is a relational database. It stores structured data in tables.</p>
+            <ul>
+              <li><strong>Why used:</strong> Bookings are important business records, so they need durable storage.</li>
+              <li><strong>How it works here:</strong> Docker Compose starts a PostgreSQL database named <span class="file">booking_db</span> on host port <span class="file">5433</span>.</li>
+              <li><strong>Interview line:</strong> "Each microservice owns its own database, and this service owns the booking database."</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag red">Jakarta Validation</span>
+            <h3>What it is</h3>
+            <p>Validation annotations check that incoming data is acceptable before business logic runs.</p>
+            <ul>
+              <li><strong>Why used:</strong> You do not want bookings with missing customer id, empty items, zero quantity, or negative price.</li>
+              <li><strong>How it works here:</strong> <span class="file">@Valid</span> triggers rules like <span class="file">@NotNull</span>, <span class="file">@NotEmpty</span>, <span class="file">@Min(1)</span>, and <span class="file">@DecimalMin("0.00")</span>.</li>
+              <li><strong>Interview line:</strong> "I validate requests at the API boundary so invalid data does not enter the domain logic."</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="dependencies">
+        <div class="section-head">
+          <h2>Dependencies In pom.xml</h2>
+          <p>Your <span class="file">pom.xml</span> tells Maven which tools your application needs. This table explains the important ones.</p>
+        </div>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Dependency</th>
+                <th>What it gives you</th>
+                <th>Why you needed it</th>
+                <th>Where you see it</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="file">spring-boot-starter-web</span></td>
+                <td>REST controllers, embedded web server, JSON request/response handling.</td>
+                <td>To build HTTP APIs for bookings.</td>
+                <td><span class="file">@RestController</span>, <span class="file">@PostMapping</span>, <span class="file">@RequestBody</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">spring-boot-starter-data-jpa</span></td>
+                <td>JPA, Hibernate, repository support, entity persistence.</td>
+                <td>To save and load bookings from PostgreSQL.</td>
+                <td><span class="file">@Entity</span>, <span class="file">JpaRepository</span>, <span class="file">@OneToMany</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">spring-boot-starter-validation</span></td>
+                <td>Validation annotations and validation engine.</td>
+                <td>To reject bad booking requests early.</td>
+                <td><span class="file">@Valid</span>, <span class="file">@NotNull</span>, <span class="file">@Min</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">spring-boot-starter-actuator</span></td>
+                <td>Production helper endpoints like health checks.</td>
+                <td>To check if the service is alive.</td>
+                <td><span class="file">/actuator/health</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">springdoc-openapi-starter-webmvc-ui</span></td>
+                <td>Swagger UI and OpenAPI documentation.</td>
+                <td>To inspect and try the API in a browser.</td>
+                <td><span class="file">/swagger-ui.html</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">postgresql</span></td>
+                <td>JDBC driver for PostgreSQL.</td>
+                <td>So Java can connect to the PostgreSQL database.</td>
+                <td><span class="file">application.yaml</span> datasource URL.</td>
+              </tr>
+              <tr>
+                <td><span class="file">lombok</span></td>
+                <td>Can generate boilerplate code like getters and constructors.</td>
+                <td>It is included, though this project mostly uses explicit methods and Java records.</td>
+                <td><span class="file">pom.xml</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="file">spring-boot-starter-test</span></td>
+                <td>JUnit, Mockito, AssertJ, MockMvc, and Spring testing tools.</td>
+                <td>To test service logic and controller behavior.</td>
+                <td><span class="file">BookingServiceTest</span>, <span class="file">BookingControllerTest</span>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <div class="section-head">
+          <h2>How The Important Parts Work Internally</h2>
+          <p>This section helps you answer follow-up questions when the interviewer asks "but how does that work?"</p>
+        </div>
+        <details open>
+          <summary>How does Spring know about your classes?</summary>
+          <p>
+            When the app starts, <span class="file">@SpringBootApplication</span> enables component scanning.
+            Spring scans the package of the main application class and its subpackages. It finds classes with annotations like
+            <span class="file">@RestController</span>, <span class="file">@Service</span>, and <span class="file">@Component</span>.
+            Then it creates objects from those classes and stores them in the Spring application context.
+          </p>
+        </details>
+        <details>
+          <summary>How does dependency injection work in your service?</summary>
+          <p>
+            <span class="file">BookingService</span> has a constructor that asks for <span class="file">BookingRepository</span>,
+            <span class="file">TicketingClient</span>, and <span class="file">PaymentClient</span>. Spring already knows how to create those objects,
+            so it passes them into the constructor. This is dependency injection. It means your service does not create dependencies manually,
+            which makes the code cleaner and easier to test.
+          </p>
+        </details>
+        <details>
+          <summary>How does JSON become a Java object?</summary>
+          <p>
+            In the controller, <span class="file">@RequestBody CreateBookingRequest request</span> tells Spring to read the HTTP request body.
+            Spring uses Jackson, its JSON library, to convert JSON fields into the Java record fields. For example,
+            JSON <span class="file">customerId</span> becomes <span class="file">request.customerId()</span>.
+          </p>
+        </details>
+        <details>
+          <summary>How does validation work?</summary>
+          <p>
+            The controller uses <span class="file">@Valid</span>. Before calling the method body, Spring checks the validation annotations
+            inside <span class="file">CreateBookingRequest</span> and nested <span class="file">BookingItemRequest</span>.
+            If validation fails, Spring throws <span class="file">MethodArgumentNotValidException</span>. Your
+            <span class="file">GlobalExceptionHandler</span> catches that and returns a 400 response with validation errors.
+          </p>
+        </details>
+        <details>
+          <summary>How does JPA save a booking and its items?</summary>
+          <p>
+            <span class="file">Booking</span> has a <span class="file">@OneToMany</span> relationship to <span class="file">BookingItem</span>
+            with <span class="file">cascade = CascadeType.ALL</span>. This means when the booking is saved, JPA also saves its items.
+            Each item has a <span class="file">@ManyToOne</span> relationship back to the booking, so the database can store which item belongs
+            to which booking.
+          </p>
+        </details>
+        <details>
+          <summary>How does Spring Data create repository methods?</summary>
+          <p>
+            <span class="file">BookingRepository</span> extends <span class="file">JpaRepository&lt;Booking, Long&gt;</span>.
+            Spring Data creates an implementation at runtime. For built-in methods like <span class="file">save</span> and
+            <span class="file">findById</span>, Spring Data already knows what SQL to generate. For
+            <span class="file">findByCustomerId</span>, it reads the method name and generates a query based on the
+            <span class="file">customerId</span> field.
+          </p>
+        </details>
+        <details>
+          <summary>How do transactions work here?</summary>
+          <p>
+            <span class="file">@Transactional</span> on <span class="file">BookingService</span> means database operations inside service methods
+            run inside a transaction. A transaction is a unit of work. If everything succeeds, changes are committed. If a runtime exception happens,
+            database changes are rolled back. Read-only methods use <span class="file">@Transactional(readOnly = true)</span> because they only load data.
+          </p>
+        </details>
+        <details>
+          <summary>How do external service clients work?</summary>
+          <p>
+            <span class="file">TicketingClient</span> and <span class="file">PaymentClient</span> use <span class="file">RestTemplate</span>
+            to make HTTP calls to other services. Ticketing reserves or releases ticket quantities. Payment creates a payment.
+            In mock mode, those methods return without making real HTTP calls, which lets you demo the booking service independently.
+          </p>
+        </details>
+        <details>
+          <summary>How does error handling work?</summary>
+          <p>
+            <span class="file">GlobalExceptionHandler</span> is marked with <span class="file">@RestControllerAdvice</span>.
+            It watches controller errors globally. If a booking is missing, it returns 404. If validation fails or the booking state is invalid,
+            it returns 400. If a dependent service call fails, it returns 503. All errors are shaped as <span class="file">ApiError</span>.
+          </p>
+        </details>
+        <details>
+          <summary>How does Docker Compose help?</summary>
+          <p>
+            <span class="file">docker-compose.yml</span> starts both the booking service and PostgreSQL together.
+            The app container uses database URL <span class="file">jdbc:postgresql://booking-db:5432/booking_db</span>,
+            because inside Docker Compose, services can talk to each other by service name. Your machine accesses PostgreSQL through port
+            <span class="file">5433</span> and the app through port <span class="file">8081</span>.
+          </p>
+        </details>
+      </section>
+
+      <section id="explain-project">
+        <div class="section-head">
+          <h2>How To Explain Your Project</h2>
+          <p>Here are three versions: short, medium, and detailed. Practice all three.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <span class="tag green">30 seconds</span>
+            <h3>Short answer</h3>
+            <p>
+              "I built a Spring Boot Booking Service for an event ticketing system. It exposes REST APIs to create,
+              view, cancel, and pay for bookings. It stores bookings in PostgreSQL and talks to ticketing and payment services."
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag blue">1 minute</span>
+            <h3>Medium answer</h3>
+            <p>
+              "The app follows a layered architecture. The controller handles HTTP endpoints, the service handles business logic,
+              the domain model represents booking rules, and the repository persists data using Spring Data JPA. When a booking is created,
+              the service reserves tickets first, creates a pending booking, calculates total price and expiry, then saves it."
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag gold">2 minutes</span>
+            <h3>Detailed answer</h3>
+            <p>
+              "I designed it as a microservice with its own database because booking is a separate business capability.
+              It uses DTOs for API input and output, JPA entities for persistence, validation for request safety, and a global
+              exception handler for consistent error responses. I also added tests for service behavior and controller HTTP behavior."
+            </p>
+          </article>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            Best interview habit: always move from simple to detailed. First say what the app does. Then explain the architecture.
+            Then explain one concrete flow, usually create booking.
+          </p>
+        </div>
+      </section>
+
+      <section id="why">
+        <div class="section-head">
+          <h2>Why You Built It This Way</h2>
+          <p>Interviewers often care less about the code existing and more about your reasoning.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <span class="tag blue">Microservice boundary</span>
+            <h3>Booking owns bookings only</h3>
+            <p>Keeping inventory and payments outside this service makes the boundary cleaner. Each service can evolve around one business capability.</p>
+          </article>
+          <article class="card">
+            <span class="tag green">DTOs</span>
+            <h3>API shape is separate</h3>
+            <p>Request and response records prevent exposing JPA entities directly. That protects persistence details from becoming part of the public API.</p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Transactions</span>
+            <h3>Use cases are transactional</h3>
+            <p><span class="file">@Transactional</span> on the service means booking changes are handled as application-level units of work.</p>
+          </article>
+          <article class="card">
+            <span class="tag red">Validation</span>
+            <h3>Reject bad data early</h3>
+            <p>Jakarta Validation catches missing IDs, empty item lists, invalid quantities, and negative prices before deeper logic executes.</p>
+          </article>
+          <article class="card">
+            <span class="tag blue">Mock mode</span>
+            <h3>Demo independently</h3>
+            <p>Ticketing and payment clients support mock mode so this service can be demonstrated before all other services are running.</p>
+          </article>
+          <article class="card">
+            <span class="tag green">Docker</span>
+            <h3>Repeatable environment</h3>
+            <p>The Dockerfile builds the app, and Docker Compose starts the service with PostgreSQL on the expected ports.</p>
+          </article>
+        </div>
+        <div class="section-head" style="margin-top: 34px;">
+          <h2>Why Questions You Should Be Ready For</h2>
+          <p>These answers explain the reasoning behind the tools and design choices.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag blue">Why controllers?</span>
+            <h3>To separate HTTP from business logic</h3>
+            <p>
+              The controller knows about routes, request bodies, path variables, and status codes. It should stay thin.
+              The booking rules live in the service and domain model so they are easier to test and reuse.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag green">Why services?</span>
+            <h3>To represent use cases</h3>
+            <p>
+              Creating a booking is not just saving data. It reserves tickets, creates domain objects, saves them, and returns a response.
+              A service method is a good place to coordinate that workflow.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Why DTO records?</span>
+            <h3>To keep API data clean</h3>
+            <p>
+              Java records are concise immutable data carriers. They are useful for request and response DTOs because DTOs mostly hold data
+              and do not need complex behavior.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag red">Why not return entities?</span>
+            <h3>To protect the API contract</h3>
+            <p>
+              JPA entities contain persistence details and relationships. Returning DTOs lets you decide exactly what the API response looks like,
+              without exposing internal database structure.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag blue">Why an enum for status?</span>
+            <h3>To restrict valid states</h3>
+            <p>
+              <span class="file">BookingStatus</span> can only be <span class="file">PENDING</span>, <span class="file">CONFIRMED</span>,
+              <span class="file">CANCELLED</span>, or <span class="file">EXPIRED</span>. This is safer than using random strings.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag green">Why a Money object?</span>
+            <h3>To keep amount and currency together</h3>
+            <p>
+              Money is not just a number. The amount needs a currency. The <span class="file">Money</span> value object keeps those together
+              in booking totals and item prices.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag gold">Why BigDecimal?</span>
+            <h3>To avoid floating-point money errors</h3>
+            <p>
+              Money should not use <span class="file">double</span> because decimal calculations can become inaccurate.
+              <span class="file">BigDecimal</span> is the standard Java choice for precise money values.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag red">Why Swagger?</span>
+            <h3>To make the API easy to inspect</h3>
+            <p>
+              Swagger UI gives a browser page where you can see endpoints and try requests. This helps during development, demos, and interviews.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag blue">Why mock mode?</span>
+            <h3>To run this service independently</h3>
+            <p>
+              In a microservice system, not every service may be ready or running. Mock mode lets Booking Service demonstrate its own behavior
+              without needing real Ticketing and Payment services.
+            </p>
+          </article>
+          <article class="card">
+            <span class="tag green">Why Docker?</span>
+            <h3>To make running the app repeatable</h3>
+            <p>
+              Docker packages the runtime environment. Docker Compose starts both the app and database with the right ports and credentials.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="api">
+        <div class="section-head">
+          <h2>API Endpoints</h2>
+          <p>Memorize these as user actions, not just routes.</p>
+        </div>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Purpose</th>
+                <th>What to say</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>POST</td>
+                <td><span class="file">/bookings</span></td>
+                <td>Create booking</td>
+                <td>Reserves ticket quantities and saves a pending booking.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td><span class="file">/bookings/{id}</span></td>
+                <td>Read booking</td>
+                <td>Loads one booking by id or returns 404.</td>
+              </tr>
+              <tr>
+                <td>DELETE</td>
+                <td><span class="file">/bookings/{id}</span></td>
+                <td>Cancel booking</td>
+                <td>Changes status to cancelled and releases reserved tickets.</td>
+              </tr>
+              <tr>
+                <td>POST</td>
+                <td><span class="file">/bookings/{id}/pay</span></td>
+                <td>Initiate payment</td>
+                <td>Only pending, non-expired bookings can start payment.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td><span class="file">/users/{userId}/bookings</span></td>
+                <td>List user bookings</td>
+                <td>Uses a repository query method: <span class="file">findByCustomerId</span>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="security">
+        <div class="section-head">
+          <h2>Spring Security And JWT</h2>
+          <p>The booking APIs are now protected with JWT bearer-token authentication.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag red">What changed</span>
+            <h3>Protected booking endpoints</h3>
+            <p>
+              Spring Security now requires a valid JWT for booking API calls. Health and Swagger endpoints stay public
+              so the service can still be checked and documented easily.
+            </p>
+            <ul>
+              <li><span class="file">SecurityConfig</span> defines the security rules.</li>
+              <li><span class="file">JwtProperties</span> reads issuer and secret from configuration.</li>
+              <li><span class="file">spring-boot-starter-security</span> enables Spring Security.</li>
+              <li><span class="file">spring-boot-starter-oauth2-resource-server</span> validates bearer JWTs.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="tag blue">How it works</span>
+            <h3>Resource server model</h3>
+            <p>
+              This service does not create users or passwords. It acts as a resource server: another auth service would issue
+              JWTs, and Booking Service validates them before allowing access to protected endpoints.
+            </p>
+            <pre class="code">Authorization: Bearer &lt;jwt-token&gt;</pre>
+          </article>
+        </div>
+        <div class="table" style="margin-top: 16px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Endpoint group</th>
+                <th>Access</th>
+                <th>Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="file">/actuator/health</span>, Swagger, OpenAPI</td>
+                <td>Public</td>
+                <td>Useful for health checks and API documentation.</td>
+              </tr>
+              <tr>
+                <td><span class="file">/bookings</span>, <span class="file">/users/{userId}/bookings</span></td>
+                <td>JWT required</td>
+                <td>Booking data belongs to users and should not be open to anonymous callers.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="talk-track" style="margin-top: 16px;">
+          <p>
+            "I added Spring Security and configured the service as a stateless JWT resource server. Public endpoints like
+            health and Swagger are allowed, but booking endpoints require an Authorization bearer token. The service validates
+            token signature and issuer using the configured JWT secret and issuer."
+          </p>
+        </div>
+      </section>
+
+      <section id="tests">
+        <div class="section-head">
+          <h2>Testing Story</h2>
+          <p>You have both service-level and controller-level tests, which is a nice interview point.</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <span class="tag green">Service test</span>
+            <h3><span class="file">BookingServiceTest</span></h3>
+            <p>Uses Mockito to verify that creating a booking reserves tickets, saves the booking, returns pending status, calculates total amount, and includes booking items.</p>
+          </article>
+          <article class="card">
+            <span class="tag blue">Controller test</span>
+            <h3><span class="file">BookingControllerTest</span></h3>
+            <p>Uses MockMvc to test HTTP behavior: a valid create request returns 201, and an invalid request returns 400 with a validation error message.</p>
+          </article>
+        </div>
+        <ul class="checklist" style="margin-top: 16px;">
+          <li><span class="check">✓</span><span><strong>What to mention:</strong> "I separated controller tests from business logic tests so I can verify both HTTP behavior and service orchestration."</span></li>
+          <li><span class="check">✓</span><span><strong>Possible improvement:</strong> "Next I would add integration tests with PostgreSQL/Testcontainers and tests for cancel and payment edge cases."</span></li>
+        </ul>
+      </section>
+
+      <section id="questions">
+        <div class="section-head">
+          <h2>Interview Q and A</h2>
+          <p>Practice these out loud tonight. Short, specific answers win.</p>
+        </div>
+        <details open>
+          <summary>Why is this a separate microservice?</summary>
+          <p>Because booking is its own business capability. It has its own lifecycle, persistence, and rules. It depends on ticketing and payment, but it should not own inventory or payment processing.</p>
+        </details>
+        <details>
+          <summary>What is Spring Boot doing for you?</summary>
+          <p>It starts the embedded web server, scans my classes, creates Spring-managed objects, injects dependencies through constructors, loads configuration, connects to the database, and maps HTTP requests to controller methods.</p>
+        </details>
+        <details>
+          <summary>What is dependency injection in your project?</summary>
+          <p><span class="file">BookingService</span> needs a repository, a ticketing client, and a payment client. Instead of creating those objects manually with <span class="file">new</span>, Spring passes them into the constructor. This makes the code easier to test because mocks can be injected in unit tests.</p>
+        </details>
+        <details>
+          <summary>Why use DTOs instead of returning entities?</summary>
+          <p>DTOs keep the API contract separate from the database model. That makes the API safer to change and prevents exposing JPA relationships or internal fields accidentally.</p>
+        </details>
+        <details>
+          <summary>What is the difference between controller and service?</summary>
+          <p>The controller is responsible for HTTP concerns: routes, request body, path variables, response status. The service is responsible for business use cases: reserving tickets, creating bookings, cancelling, releasing tickets, and starting payment.</p>
+        </details>
+        <details>
+          <summary>How does the app calculate total price?</summary>
+          <p>The <span class="file">Booking</span> aggregate sums each booking item's unit price multiplied by quantity, then wraps the result in the <span class="file">Money</span> value object with the selected currency.</p>
+        </details>
+        <details>
+          <summary>How do you handle invalid requests?</summary>
+          <p>Request records use Jakarta Validation annotations like <span class="file">@NotNull</span>, <span class="file">@NotEmpty</span>, <span class="file">@Min</span>, and <span class="file">@DecimalMin</span>. The global exception handler turns validation failures into consistent 400 responses.</p>
+        </details>
+        <details>
+          <summary>What happens if the Ticketing Service or Payment Service is down?</summary>
+          <p>REST client failures are caught by the global exception handler and returned as 503 Service Unavailable. In local demo mode, mock mode can be enabled so the booking service can run independently.</p>
+        </details>
+        <details>
+          <summary>Why is a booking initially PENDING?</summary>
+          <p>Because creating a booking reserves tickets but does not complete payment yet. The booking remains pending while the customer has time to pay before the reservation expiry.</p>
+        </details>
+        <details>
+          <summary>What would you improve next?</summary>
+          <p>I would add stronger compensation if reserving multiple ticket types partially fails, add integration tests with real PostgreSQL, and add an event or callback flow to confirm bookings after successful payment.</p>
+        </details>
+      </section>
+
+      <section id="run">
+        <div class="section-head">
+          <h2>How To Demo It</h2>
+          <p>Keep this sequence ready in case they ask you to run or explain the app locally.</p>
+        </div>
+        <pre class="code">docker compose up -d --build
+curl http://localhost:8081/actuator/health
+open http://localhost:8081/swagger-ui.html
+
+# Create a booking
+curl -X POST http://localhost:8081/bookings \
+  -H "Content-Type: application/json" \
+  -d '{"customerId":1,"eventId":10,"currency":"EUR","items":[{"ticketTypeId":5,"quantity":2,"unitPrice":25.00}]}'</pre>
+      </section>
+
+      <footer>
+        <strong>Final memory hook:</strong>
+        Booking Service receives a request, validates it, reserves tickets, creates a pending booking aggregate,
+        stores it in PostgreSQL, and later either cancels/releases tickets or initiates payment.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
