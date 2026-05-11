@@ -79,9 +79,26 @@ public class BookingService {
                 "Payment initiated for booking " + booking.getBookingId());
     }
 
+    public BookingResponse confirmBooking(Long bookingId) {
+        Booking booking = findBooking(bookingId);
+        if (booking.isExpired()) {
+            throw new IllegalStateException("Booking reservation has expired");
+        }
+
+        booking.confirm();
+        return toResponse(bookingRepository.save(booking));
+    }
+
     @Transactional(readOnly = true)
     public List<BookingResponse> getBookingsByUser(Long userId) {
         return bookingRepository.findByCustomerId(userId).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookingResponse> getAllBookings() {
+        return bookingRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
     }
