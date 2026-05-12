@@ -1,6 +1,8 @@
 package ee.ut.eventticketing.booking_service.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ee.ut.eventticketing.booking_service.dto.BookingItemRequest;
 import ee.ut.eventticketing.booking_service.dto.BookingResponse;
 import ee.ut.eventticketing.booking_service.dto.CreateBookingRequest;
 import ee.ut.eventticketing.booking_service.dto.PaymentInitiationResponse;
@@ -49,8 +52,59 @@ public class BookingController {
         return bookingService.initiatePayment(id);
     }
 
+    @PostMapping("/bookings/{id}/confirm")
+    public BookingResponse confirmBooking(@PathVariable Long id) {
+        return bookingService.confirmBooking(id);
+    }
+
     @GetMapping("/users/{userId}/bookings")
     public List<BookingResponse> getBookingsByUser(@PathVariable Long userId) {
         return bookingService.getBookingsByUser(userId);
+    }
+
+    @GetMapping("/demo/users/{userId}/bookings")
+    public List<BookingResponse> getDemoBookingsByUser(@PathVariable Long userId) {
+        return bookingService.getBookingsByUser(userId);
+    }
+
+    @GetMapping("/demo/bookings")
+    public List<BookingResponse> getDemoBookings() {
+        return bookingService.getAllBookings();
+    }
+
+    @PostMapping("/demo/bookings/payment-check")
+    public Map<String, Object> createDemoBookingAndPayment() {
+        CreateBookingRequest request = new CreateBookingRequest(
+                1L,
+                100L,
+                "EUR",
+                List.of(new BookingItemRequest(10L, 1, BigDecimal.valueOf(25.00))));
+
+        BookingResponse booking = bookingService.createBooking(request);
+        PaymentInitiationResponse payment = bookingService.initiatePayment(booking.bookingId());
+
+        return Map.of(
+                "message", "Booking Service created a booking and called Payment Service",
+                "bookingId", booking.bookingId(),
+                "bookingStatus", booking.status(),
+                "paymentId", payment.paymentId(),
+                "paymentMessage", payment.message(),
+                "totalAmount", booking.totalAmount(),
+                "currency", booking.currency());
+    }
+
+    @PostMapping("/demo/bookings/book-and-pay")
+    public Map<String, Object> createSelectedDemoBookingAndPayment(@Valid @RequestBody CreateBookingRequest request) {
+        BookingResponse booking = bookingService.createBooking(request);
+        PaymentInitiationResponse payment = bookingService.initiatePayment(booking.bookingId());
+
+        return Map.of(
+                "message", "Booking Service created a booking and called Payment Service",
+                "bookingId", booking.bookingId(),
+                "bookingStatus", booking.status(),
+                "paymentId", payment.paymentId(),
+                "paymentMessage", payment.message(),
+                "totalAmount", booking.totalAmount(),
+                "currency", booking.currency());
     }
 }
